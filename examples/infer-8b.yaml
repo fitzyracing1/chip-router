@@ -1,0 +1,10 @@
+# 8B-class FP8 inference that fits in 24 GB.
+# Memory floor is estimated as model_size_gb * 1.2 = 9.6 GB.
+name: infer-8b
+task: inference
+precision: fp8
+model_size_gb: 8
+optimize: balanced
+software: any
+max_runtime_hours: 2
+budget_usd_per_hour: 3.00

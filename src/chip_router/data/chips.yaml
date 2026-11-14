@@ -1,0 +1,405 @@
+# chip-router catalog
+# Hardware numbers come from vendor datasheets or official product pages.
+# Tensor throughputs are stored as dense (no structured sparsity) TFLOPS
+# whenever the vendor publishes both, so chips can be compared fairly.
+# Sparse peaks are included for reference.
+# Provider prices are public on-demand list rates with a retrieval date and
+# source URL. They are not quotes, they can change, and they are never
+# invented. Missing offers mean no public list price was found on that
+# provider — not a zero-dollar price.
+
+schema_version: 1
+updated: "2026-11-13"
+notes: >
+  Default on-demand rates: RunPod Secure Cloud (pricing page updated
+  2026-11-12); Modal GPU-only per-second rates converted to $/hr;
+  Lambda 1x instance prices published for 2026-11-16 00:00 UTC (not yet
+  in effect at catalog time). Modal also bills CPU and memory separately.
+
+chips:
+  - id: nvidia-h100-sxm
+    name: NVIDIA H100 SXM
+    vendor: NVIDIA
+    architecture: Hopper
+    form_factor: SXM
+    software: cuda
+    memory_gb: 80
+    memory_type: HBM3
+    memory_bandwidth_gbs: 3350
+    bf16_tflops_dense: 989.5
+    bf16_tflops_sparse: 1979
+    fp8_tflops_dense: 1979
+    fp8_tflops_sparse: 3958
+    fp8_supported: true
+    sources:
+      - title: NVIDIA H100 Tensor Core GPU datasheet
+        url: "https://resources.nvidia.com/en-us-gpu/h100-datasheet-24306"
+        retrieved: "2026-11-13"
+        notes: >
+          H100 SXM: 80 GB, 3.35 TB/s. Datasheet Tensor Core peaks are
+          marked "with sparsity" (BF16 1,979 TFLOPS, FP8 3,958 TFLOPS).
+          Dense values are half of those figures.
+    offers:
+      - provider: runpod
+        sku: H100 SXM
+        usd_per_hour: 4.39
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/pricing"
+        source_note: "RunPod pricing page, updated November 12, 2026. Secure Cloud on-demand."
+      - provider: modal
+        sku: Nvidia H100 SXM5
+        usd_per_second: 0.001097
+        usd_per_hour: 3.9492
+        pricing_kind: public_list
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://modal.com/pricing"
+        source_note: "Official rate is $0.001097/sec (GPU only). Hourly figure is 0.001097*3600. Modal also bills CPU and memory separately."
+      - provider: lambda
+        sku: NVIDIA H100 SXM 1x
+        usd_per_hour: 4.89
+        pricing_kind: published_future_list
+        billing: per_minute
+        effective_at: "2026-11-16T00:00:00Z"
+        retrieved: "2026-11-13"
+        source_url: "https://lambda.ai/pricing"
+        source_note: "Public 1x instance price that takes effect 2026-11-16 00:00 UTC. Until then, current prices are only shown after login to Lambda Cloud."
+
+  - id: nvidia-h200-sxm
+    name: NVIDIA H200 SXM
+    vendor: NVIDIA
+    architecture: Hopper
+    form_factor: SXM
+    software: cuda
+    memory_gb: 141
+    memory_type: HBM3e
+    memory_bandwidth_gbs: 4800
+    bf16_tflops_dense: 989.5
+    bf16_tflops_sparse: 1979
+    fp8_tflops_dense: 1979
+    fp8_tflops_sparse: 3958
+    fp8_supported: true
+    sources:
+      - title: NVIDIA H200 GPU product page
+        url: "https://www.nvidia.com/en-us/data-center/h200/"
+        retrieved: "2026-11-13"
+        notes: >
+          H200 SXM: 141 GB, 4.8 TB/s. Tensor Core peaks are marked
+          "with sparsity" and match H100 SXM (BF16 1,979 TFLOPS, FP8
+          3,958 TFLOPS). Dense values are half of those figures.
+          Footnote: preliminary specifications, may be subject to change.
+    offers:
+      - provider: runpod
+        sku: H200
+        usd_per_hour: 5.29
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/pricing"
+        source_note: "RunPod pricing page, updated November 12, 2026. Secure Cloud on-demand."
+      - provider: modal
+        sku: Nvidia H200 SXM
+        usd_per_second: 0.001261
+        usd_per_hour: 4.5396
+        pricing_kind: public_list
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://modal.com/pricing"
+        source_note: "Official rate is $0.001261/sec (GPU only). Hourly figure is 0.001261*3600. Modal also bills CPU and memory separately."
+
+  - id: nvidia-b200-sxm
+    name: NVIDIA B200 SXM
+    vendor: NVIDIA
+    architecture: Blackwell
+    form_factor: SXM
+    software: cuda
+    memory_gb: 180
+    memory_type: HBM3e
+    memory_bandwidth_gbs: 8000
+    memory_bandwidth_note: "NVIDIA lists 'up to 8 TB/s' per B200 SXM."
+    bf16_tflops_dense: null
+    bf16_tflops_sparse: null
+    fp8_tflops_dense: 4500
+    fp8_tflops_sparse: 9000
+    fp8_supported: true
+    sources:
+      - title: NVIDIA HGX AI Factory components (H100, H200, B200)
+        url: "https://docs.nvidia.com/enterprise-reference-architectures/hgx-ai-factory-h100-h200-b200/latest/components.html"
+        retrieved: "2026-11-13"
+        notes: "B200 SXM: 180 GB HBM3e, memory bandwidth up to 8 TB/s."
+      - title: NVIDIA DGX B200 product page
+        url: "https://www.nvidia.com/en-us/data-center/dgx-b200/"
+        retrieved: "2026-11-13"
+        notes: >
+          An 8-GPU DGX B200 is listed at 1,440 GB and 64 TB/s HBM3e
+          (180 GB and 8 TB/s per GPU) and FP8 Tensor Core 72 PFLOPS
+          sparse, with the footnote that dense performance is half the
+          sparse spec (36 PFLOPS dense for the system, 4.5 PFLOPS dense
+          / 9 PFLOPS sparse per GPU). NVIDIA does not publish a per-GPU
+          BF16 peak on that table; BF16 fields are left null.
+    offers:
+      - provider: runpod
+        sku: B200
+        usd_per_hour: 7.99
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/pricing"
+        source_note: "RunPod pricing page, updated November 12, 2026. Secure Cloud on-demand."
+      - provider: modal
+        sku: Nvidia B200
+        usd_per_second: 0.001736
+        usd_per_hour: 6.2496
+        pricing_kind: public_list
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://modal.com/pricing"
+        source_note: "Official rate is $0.001736/sec (GPU only). Hourly figure is 0.001736*3600. Modal also bills CPU and memory separately."
+      - provider: lambda
+        sku: NVIDIA B200 SXM6 1x
+        usd_per_hour: 7.99
+        pricing_kind: published_future_list
+        billing: per_minute
+        effective_at: "2026-11-16T00:00:00Z"
+        retrieved: "2026-11-13"
+        source_url: "https://lambda.ai/pricing"
+        source_note: "Public 1x instance price that takes effect 2026-11-16 00:00 UTC. Until then, current prices are only shown after login to Lambda Cloud."
+
+  - id: nvidia-a100-80gb-sxm
+    name: NVIDIA A100 80GB SXM
+    vendor: NVIDIA
+    architecture: Ampere
+    form_factor: SXM
+    software: cuda
+    memory_gb: 80
+    memory_type: HBM2e
+    memory_bandwidth_gbs: 2039
+    bf16_tflops_dense: 312
+    bf16_tflops_sparse: 624
+    fp8_tflops_dense: null
+    fp8_tflops_sparse: null
+    fp8_supported: false
+    sources:
+      - title: NVIDIA A100 Tensor Core GPU datasheet
+        url: "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-nvidia-us-2188504-web.pdf"
+        retrieved: "2026-11-13"
+        notes: >
+          A100 80GB SXM: 80 GB HBM2e, 2,039 GB/s. BF16 Tensor Core 312
+          TFLOPS dense, 624 TFLOPS with sparsity. Ampere A100 does not
+          implement FP8 Tensor Cores. PCIe variant is 1,935 GB/s; this
+          entry uses the SXM figures.
+    offers:
+      - provider: runpod
+        sku: A100 SXM
+        usd_per_hour: 2.19
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/pricing"
+        source_note: "RunPod pricing page, updated November 12, 2026. Secure Cloud on-demand, A100 SXM 80 GB."
+      - provider: modal
+        sku: "Nvidia A100, 80 GB"
+        usd_per_second: 0.000694
+        usd_per_hour: 2.4984
+        pricing_kind: public_list
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://modal.com/pricing"
+        source_note: "Official rate is $0.000694/sec (GPU only). Hourly figure is 0.000694*3600. Modal also bills CPU and memory separately."
+      - provider: lambda
+        sku: NVIDIA HGX A100 80GB 8x
+        usd_per_hour: 3.19
+        pricing_kind: published_future_list
+        billing: per_minute
+        instance_size: 8x
+        effective_at: "2026-11-16T00:00:00Z"
+        retrieved: "2026-11-13"
+        source_url: "https://lambda.ai/pricing"
+        source_note: "Lambda lists the 80 GB A100 only on 8-GPU HGX instances, at $3.19 per GPU-hour, effective 2026-11-16 00:00 UTC. There is no public 1x 80 GB A100 price on that page."
+
+  - id: nvidia-l40s
+    name: NVIDIA L40S
+    vendor: NVIDIA
+    architecture: Ada Lovelace
+    form_factor: PCIe
+    software: cuda
+    memory_gb: 48
+    memory_type: GDDR6
+    memory_bandwidth_gbs: 864
+    bf16_tflops_dense: 362.05
+    bf16_tflops_sparse: 733
+    fp8_tflops_dense: 733
+    fp8_tflops_sparse: 1466
+    fp8_supported: true
+    sources:
+      - title: NVIDIA L40S product page
+        url: "https://www.nvidia.com/en-us/data-center/l40s/"
+        retrieved: "2026-11-13"
+        notes: >
+          48 GB GDDR6, 864 GB/s. Official table: BF16 Tensor Core
+          362.05 | 733* TFLOPS, FP8 Tensor Core 733 | 1,466* TFLOPS,
+          * with sparsity.
+    offers:
+      - provider: runpod
+        sku: L40S
+        usd_per_hour: 1.09
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/pricing"
+        source_note: "RunPod pricing page, updated November 12, 2026. Secure Cloud on-demand."
+      - provider: modal
+        sku: Nvidia L40S
+        usd_per_second: 0.000542
+        usd_per_hour: 1.9512
+        pricing_kind: public_list
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://modal.com/pricing"
+        source_note: "Official rate is $0.000542/sec (GPU only). Hourly figure is 0.000542*3600. Modal also bills CPU and memory separately."
+
+  - id: nvidia-a10g
+    name: NVIDIA A10G
+    vendor: NVIDIA
+    architecture: Ampere
+    form_factor: PCIe
+    software: cuda
+    memory_gb: 24
+    memory_type: GDDR6
+    memory_bandwidth_gbs: 600
+    bf16_tflops_dense: 70
+    bf16_tflops_sparse: 140
+    fp8_tflops_dense: null
+    fp8_tflops_sparse: null
+    fp8_supported: false
+    sources:
+      - title: NVIDIA A10G Tensor Core GPU datasheet (AWS)
+        url: "https://d1.awsstatic.com/product-marketing/ec2/NVIDIA_AWS_A10G_DataSheet_FINAL_02_17_2022.pdf"
+        retrieved: "2026-11-13"
+        notes: >
+          24 GB GDDR6, 600 GB/s, BF16 Tensor Core 70 TFLOPS dense and
+          140 TFLOPS with sparsity. Ampere A10G does not implement FP8
+          Tensor Cores. A10G is the AWS G5 SKU. RunPod, Modal, and
+          Lambda did not list A10G on their public pricing pages when
+          this catalog was compiled (Modal and Lambda list NVIDIA A10,
+          a related but different SKU), so this chip has no offers.
+    offers: []
+
+  - id: nvidia-rtx-4090
+    name: NVIDIA GeForce RTX 4090
+    vendor: NVIDIA
+    architecture: Ada Lovelace
+    form_factor: PCIe
+    software: cuda
+    memory_gb: 24
+    memory_type: GDDR6X
+    memory_bandwidth_gbs: 1008
+    bf16_tflops_dense: 330.25
+    bf16_tflops_sparse: 660.5
+    fp8_tflops_dense: 660.5
+    fp8_tflops_sparse: 1321
+    fp8_supported: true
+    throughput_derivation: >
+      Memory capacity and 1008 GB/s bandwidth are from the official
+      GeForce RTX 4090 product page. NVIDIA publishes 1,321 AI TOPS
+      for this card; this catalog treats that as the sparse FP8 / AI
+      TOPS peak. Dense FP8 is stored as half of 1,321 (NVIDIA 2:4
+      structured sparsity). Dense BF16 is stored as half of dense FP8
+      (Ada FP8 tensor rate is 2x BF16/FP16). Derived fields are used
+      only so scoring stays on a dense basis; see sources.
+    sources:
+      - title: NVIDIA GeForce RTX 4090 product page
+        url: "https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4090/"
+        retrieved: "2026-11-13"
+        notes: "24 GB GDDR6X, 1008 GB/s memory bandwidth."
+      - title: NVIDIA GeForce RTX 40 Series announcement
+        url: "https://nvidianews.nvidia.com/news/nvidia-delivers-quantum-leap-in-performance-introduces-new-era-of-neural-rendering-with-geforce-rtx-40-series"
+        retrieved: "2026-11-13"
+        notes: "NVIDIA published the 1,321 AI TOPS figure for the RTX 4090."
+    offers:
+      - provider: runpod
+        sku: RTX 4090
+        usd_per_hour: 0.89
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/pricing"
+        source_note: "RunPod pricing page, updated November 12, 2026. Secure Cloud on-demand."
+
+  - id: amd-mi300x
+    name: AMD Instinct MI300X
+    vendor: AMD
+    architecture: CDNA 3
+    form_factor: OAM
+    software: rocm
+    memory_gb: 192
+    memory_type: HBM3
+    memory_bandwidth_gbs: 5300
+    bf16_tflops_dense: 1307.4
+    bf16_tflops_sparse: 2614.9
+    fp8_tflops_dense: 2614.9
+    fp8_tflops_sparse: 5229.8
+    fp8_supported: true
+    sources:
+      - title: AMD Instinct MI300X Accelerator data sheet
+        url: "https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/data-sheets/amd-instinct-mi300x-data-sheet.pdf"
+        retrieved: "2026-11-13"
+        notes: >
+          192 GB HBM3, 5.3 TB/s peak theoretical bandwidth. Peak
+          theoretical: BF16 1,307.4 TFLOPS dense / 2,614.9 with
+          sparsity; FP8 2,614.9 TFLOPS dense / 5,229.8 with sparsity.
+    offers:
+      - provider: runpod
+        sku: MI300X
+        usd_per_hour: 2.39
+        pricing_kind: public_list
+        pricing_tier: secure_cloud
+        billing: per_second
+        retrieved: "2026-11-13"
+        source_url: "https://www.runpod.io/gpu-models/mi300x"
+        source_note: "RunPod MI300X page (updated August 27, 2026): Secure Cloud $2.39/hr. Community Cloud is listed as blank. On-demand, per GPU hour."
+
+  - id: google-tpu-v5p
+    name: Google TPU v5p
+    vendor: Google
+    architecture: TPU v5p
+    form_factor: pod-chip
+    software: tpu
+    memory_gb: 95
+    memory_type: HBM
+    memory_bandwidth_gbs: 2765
+    memory_note: >
+      Google lists 96 GiB physical HBM and 95 GiB usable after runtime
+      reserve. This catalog uses the usable 95 GiB figure.
+    bf16_tflops_dense: 459
+    bf16_tflops_sparse: null
+    fp8_tflops_dense: 459
+    fp8_tflops_sparse: null
+    fp8_supported: true
+    sources:
+      - title: Google Cloud TPU v5p documentation
+        url: "https://docs.cloud.google.com/tpu/docs/v5p"
+        retrieved: "2026-11-13"
+        notes: "Peak compute per chip 459 TFLOPS BF16 and 459 TFLOPS FP8, 95 GiB usable HBM, 2,765 GB/s."
+      - title: Google Cloud TPU pricing
+        url: "https://cloud.google.com/tpu/pricing"
+        retrieved: "2026-11-13"
+        notes: "On-demand TPU v5p is $4.2000 per chip-hour in us-east1 and us-east5."
+    offers:
+      - provider: google_cloud
+        sku: TPU v5p on-demand us-east1/us-east5
+        usd_per_hour: 4.20
+        pricing_kind: public_list
+        billing: per_chip_hour
+        region: us-east5
+        retrieved: "2026-11-13"
+        source_url: "https://cloud.google.com/tpu/pricing"
+        source_note: "Official on-demand list price $4.2000 per chip-hour in us-east1 (South Carolina) and us-east5 (Ohio). Google Cloud only; not offered on RunPod, Modal, or Lambda."

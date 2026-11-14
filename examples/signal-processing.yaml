@@ -1,0 +1,10 @@
+# Bandwidth-sensitive job that fits in 16 GB. Balanced mode right-sizes
+# so a 192 GB card is not chosen just because it has a high GB/s per dollar.
+name: rtl-sdr-batch
+task: signal-processing
+precision: fp32
+vram_gb: 16
+optimize: balanced
+software: cuda
+max_runtime_hours: 3
+budget_usd_per_hour: 2.00

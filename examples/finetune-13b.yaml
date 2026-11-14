@@ -1,0 +1,13 @@
+# 13B BF16 LoRA/fine-tune. Memory floor is model_size_gb * 2.5 = 32.5 GB,
+# so 24 GB cards drop out and a 48 GB card should win on cost/balance.
+name: finetune-13b
+task: fine-tune
+precision: bf16
+model_size_gb: 13
+optimize: balanced
+software: cuda
+max_runtime_hours: 6
+budget_usd_per_hour: 4.00
+preferred_providers:
+  - runpod
+  - modal
