@@ -1,0 +1,12 @@
+# 70B BF16 inference: weights are about 140 GB, so a 24/48/80 GB card is out.
+# Memory floor is estimated as model_size_gb * 1.2 = 168 GB unless vram_gb is set.
+# 168 GB needs MI300X (192 GB). Setting vram_gb keeps the estimate explicit.
+name: infer-70b
+task: inference
+precision: bf16
+model_size_gb: 140
+vram_gb: 160
+optimize: balanced
+software: any
+max_runtime_hours: 4
+budget_usd_per_hour: 8.00
